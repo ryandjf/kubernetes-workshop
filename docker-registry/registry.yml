@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: registry
+  labels:
+    app: registry
+  namespace: docker-registry
+spec:
+  containers:
+  - name: registry
+    image: registry:2
+    imagePullPolicy: Always
+    ports:
+      - containerPort: 5000
+    volumes:
+      - name: registry-data
+        awsElasticBlockStore:
+        volumeID: <volume-id>
+        fsType: ext4
+  volumeMounts:
+      - mountPath: /var/lib/registry
+        name: registry-data

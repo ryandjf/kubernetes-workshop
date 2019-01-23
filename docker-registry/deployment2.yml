@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: registry
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: registry
+    spec:
+      containers:
+      - resources:
+        name: registry
+        image: registry:2
+        ports:
+        - name: registry-port
+          containerPort: 5000
+        volumeMounts:
+        - mountPath: /var/lib/registry
+          name: images
+        - mountPath: /certs
+          name: certs
+        - mountPath: /auth
+          name: auth
+        env:
+        - name: REGISTRY_AUTH
+          value: "htpasswd"
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: "Registry Realm"
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: /auth/htpasswd
+        - name: REGISTRY_HTTP_TLS_CERTIFICATE
+          value: /certs/fullchain.pem
+        - name: REGISTRY_HTTP_TLS_KEY
+          value: /certs/privkey.pem
+      volumes:
+      - name: images
+        hostPath:
+          path: /root/registry/images
+      - name: certs
+        hostPath:
+          path: /root/registry/certs
+      - name: auth
+        hostPath:
+          path: /root/registry/auth
+      nodeSelector:
+        name: vmi74448
