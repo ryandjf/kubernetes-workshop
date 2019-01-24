@@ -32,3 +32,22 @@ spec:
         name: registry
         ports:
         - containerPort: 5000
+        volumeMounts:
+        - mountPath: /var/lib/registry
+          name: images
+        - mountPath: /auth
+          name: auth
+        env:
+        - name: REGISTRY_AUTH
+          value: "htpasswd"
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: "Registry Realm"
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: /auth/htpasswd
+      volumes:
+      - name: images
+        hostPath:
+          path: /home/ubuntu/registry/images
+      - name: auth
+        hostPath:
+          path: /home/ubuntu/registry/auth
