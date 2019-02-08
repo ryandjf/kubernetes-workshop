@@ -1,0 +1,27 @@
+version: "2"
+services:
+    jenkins-master:
+        restart: always
+        container_name: jenkins-master
+        image: jenkins-master:latest
+        build:
+            context: ./master
+            dockerfile: Dockerfile
+        ports:
+            - '30800:8080'
+            - '50000:50000'
+
+    jenkins-slave:
+        restart: always
+        container_name: jenkins-slave
+        image: jenkins-slave:latest
+        build:
+            context: ./slave
+            dockerfile: Dockerfile
+        environment:
+            - 'JENKINS_URL=http://jenkins-master:8080'
+        volumes:
+            - /usr/bin/docker:/usr/bin/docker
+            - /var/run/docker.sock:/var/run/docker.sock:rw
+        depends_on:
+            - jenkins-master
