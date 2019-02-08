@@ -11,6 +11,10 @@ spec:
     port: 8080
     targetPort: 8080
     nodePort: 30800
+  - name: jenkins-tunnel
+    port: 50000
+    targetPort: 50000
+    nodePort: 50000
   selector:
     app: jenkins-master
 ---
@@ -38,8 +42,8 @@ spec:
         ports:
         - name: ui
           containerPort: 8080
-#        - name: hooks
-#          containerPort: 50000
+        - name: hooks
+          containerPort: 50000
 #       volumeMounts:
 #        - mountPath: /var/run/docker.sock
 #          name: docker-socket

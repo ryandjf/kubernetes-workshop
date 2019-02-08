@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-slave
+  labels:
+    app: jenkins-slave
+spec:
+  ports:
+  - port: 8081
+    targetPort: 8081
+    protocol: TCP
+  selector:
+    app: jenkins-slave
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -15,7 +29,7 @@ spec:
         name: jenkins-slave
         env:
         - name: JENKINS_URL
-          value: "http://jenkins-master:8080"
+          value: http://jenkins:8080
         ports:
         - containerPort: 8081
         volumeMounts:
@@ -23,8 +37,6 @@ spec:
           name: docker-socket
         - mountPath: /usr/bin/docker
           name: docker-bin
-        # - mountPath: /var/jenkins_home
-        #   name: jenkins-home
         env:
         - name: DOCKER_USERNAME
           valueFrom:
@@ -43,6 +55,3 @@ spec:
       - name: docker-bin
         hostPath:
           path: /usr/bin/docker
-    #  - name: jenkins-home
-    #    hostPath:
-    #      path: /home/ubuntu/jenkins_home/
