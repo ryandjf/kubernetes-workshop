@@ -26,3 +26,17 @@ docker image remove "${TEST_PRIVATE_REGISTRY}/my-alpine"
 docker pull "${TEST_PRIVATE_REGISTRY}/my-alpine"
 docker images
 ```
+
+## Use Private Registry in K8S
+### Create a Secret in the cluster that holds your authorization token
+```
+
+kubectl create secret docker-registry registry-secret --docker-server=ec2-52-80-8-7.cn-north-1.compute.amazonaws.com.cn:30500 --docker-username=admin --docker-password=123 --docker-email=admin@tw.com
+
+```
+### Create a Pod that uses your Secret
+```
+ imagePullSecrets:
+  - name: registry-secret
+```
+
