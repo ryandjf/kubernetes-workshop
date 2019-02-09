@@ -46,6 +46,7 @@ def slave_run(slave_jar, jnlp_url):
         params.extend([ '-jnlpCredentials', os.environ['JENKINS_USER'] + ':' + os.environ['JENKINS_PASS'] ])
     else:
         params.extend([ '-secret', os.environ['SLAVE_SECRET'] ])
+    print ' '.join(p for p in params)
     return subprocess.Popen(params, stdout=subprocess.PIPE)
 
 def signal_handler(sig, frame):
