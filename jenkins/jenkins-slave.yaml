@@ -1,58 +1,43 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: jenkins-slave
-  labels:
-    app: jenkins-slave
-spec:
-  ports:
-  - port: 8081
-    targetPort: 8081
-    protocol: TCP
-  selector:
-    app: jenkins-slave
----
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: jenkins-slave
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
         app: jenkins-slave
     spec:
       containers:
-      - image: ec2-52-80-8-7.cn-north-1.compute.amazonaws.com.cn:30500/jenkins-slave:1.4.0
-        imagePullPolicy: IfNotPresent
-        name: jenkins-slave
-        env:
-        - name: JENKINS_URL
-          value: http://jenkins:8080
-        ports:
-        - name: slave
-          containerPort: 8081
-        volumeMounts:
-        - mountPath: /var/run/docker.sock
-          name: docker-socket
-        - mountPath: /usr/bin/docker
-          name: docker-bin
-        env:
-        - name: DOCKER_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: registry-generic-secret
-              key: username
-        - name: DOCKER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: registry-generic-secret
-              key: password
+        - image: ec2-52-80-8-7.cn-north-1.compute.amazonaws.com.cn:30500/jenkins-slave:1.5.0
+          imagePullPolicy: IfNotPresent
+          name: jenkins-slave
+          ports:
+            - name: slave-port
+              containerPort: 8082
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker-socket
+            - mountPath: /usr/bin/docker
+              name: docker-bin
+          env:
+            - name: JENKINS_URL
+              value: http://jenkins-master:8080
+            - name: DOCKER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: registry-generic-secret
+                  key: username
+            - name: DOCKER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: registry-generic-secret
+                  key: password
       volumes:
-      - name: docker-socket
-        hostPath:
-          path: /var/run/docker.sock
-      - name: docker-bin
-        hostPath:
-          path: /usr/bin/docker
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+        - name: docker-bin
+          hostPath:
+            path: /usr/bin/docker
