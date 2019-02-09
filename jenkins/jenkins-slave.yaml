@@ -14,7 +14,7 @@ spec:
           imagePullPolicy: IfNotPresent
           name: jenkins-slave
           ports:
-            - name: slave-port
+            - name: jenkins-slave-port
               containerPort: 8082
           volumeMounts:
             - mountPath: /var/run/docker.sock
