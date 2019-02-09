@@ -14,7 +14,7 @@ spec:
   - name: jenkins-tunnel
     port: 50000
     targetPort: 50000
-    nodePort: 35000
+    nodePort: 30050
   selector:
     app: jenkins-master
 ---
