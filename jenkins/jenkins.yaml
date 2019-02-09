@@ -15,7 +15,7 @@ spec:
     port: 50000
     targetPort: 50000
     nodePort: 35000
-    selector:
+  selector:
     app: jenkins-master
 ---
 apiVersion: v1
