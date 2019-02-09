@@ -13,8 +13,7 @@ ADD slave.py /var/lib/jenkins/slave.py
 WORKDIR /home/jenkins
 
 ENV JENKINS_URL "http://jenkins:8080"
-ENV JENKINS_TUNNEL "http://jenkins-tunnel:50000"
-ENV JENKINS_SLAVE_ADDRESS ""
+ENV JENKINS_SLAVE_ADDRESS "http://jenkins-tunnel:50000"
 ENV JENKINS_USER "admin"
 ENV JENKINS_PASS "admin"
 ENV SLAVE_NAME ""
