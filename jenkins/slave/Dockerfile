@@ -5,6 +5,8 @@ RUN easy_install jenkins-webapi
 
 RUN apt-get update && apt-get install -y software-properties-common && apt-add-repository --yes --update ppa:ansible/ansible && apt-get install -y ansible
 
+RUN apt-get update && apt-get install -y apt-transport-https && curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | sudo apt-key add - && echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list && apt-get update && apt-get install -y kubectl
+
 RUN mkdir -p /home/jenkins
 RUN mkdir -p /var/lib/jenkins
 
